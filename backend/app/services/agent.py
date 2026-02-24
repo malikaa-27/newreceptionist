@@ -99,7 +99,7 @@ Assistant: "I'd be happy to help schedule a call with John! What date range work
 class AgentService:
     def __init__(self):
         self.api_key = settings.smallest_api_key
-        self.base_url = "https://atoms.smallest.ai/v1"  # Smallest.ai Atom endpoint
+        self.base_url = settings.smallest_base_url
         
     async def chat(
         self,

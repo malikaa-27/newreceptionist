@@ -28,6 +28,15 @@ class Settings(BaseSettings):
     # Cookie security (set True when deployed over HTTPS)
     cookie_secure: bool = False
     
+    # Frontend URL for OAuth redirects
+    frontend_url: str = "http://localhost:3000"
+    
+    # Smallest.ai base URL
+    smallest_base_url: str = "https://atoms.smallest.ai/v1"
+    
+    # Encryption salt (configurable per installation)
+    encryption_salt: str = "ai_scheduling_salt_v1"
+    
     class Config:
         env_file = ".env"
         case_sensitive = False

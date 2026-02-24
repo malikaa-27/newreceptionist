@@ -64,7 +64,7 @@ async def chat(
         if tool_call:
             tool_called = tool_call["name"]
             tool_result = await _execute_tool(
-                tool_call, credentials, db, current_user["user_id"]
+                tool_call, credentials, db, current_user["user_id"], current_user["email"]
             )
             
             # Track if meeting was created
@@ -108,6 +108,7 @@ async def _execute_tool(
     credentials,
     db: Session,
     user_id: int,
+    user_email: str = "",
 ) -> dict:
     """Execute a tool call and return the result."""
     name = tool_call["name"]
@@ -150,10 +151,14 @@ async def _execute_tool(
                 description=args.get("description", ""),
             )
             
-            # Save meeting to DB
+            # Save meeting to DB - pick first attendee that isn't the organizer
+            participant_email = next(
+                (e for e in args["attendees"] if e != user_email),
+                args["attendees"][0],
+            )
             meeting = Meeting(
                 organizer_id=user_id,
-                participant_email=args["attendees"][1] if len(args["attendees"]) > 1 else args["attendees"][0],
+                participant_email=participant_email,
                 start_time=start,
                 end_time=end,
                 google_event_id=result["event_id"],

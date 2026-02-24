@@ -70,7 +70,7 @@ async def oauth_callback(
         
         session_token = create_session_token(user.id, user.email)
         
-        redirect_response = RedirectResponse(url="http://localhost:3000/chat")
+        redirect_response = RedirectResponse(url=f"{settings.frontend_url}/chat")
         redirect_response.set_cookie(
             key="session_token",
             value=session_token,

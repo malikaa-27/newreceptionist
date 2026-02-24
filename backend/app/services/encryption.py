@@ -8,10 +8,11 @@ from app.config import get_settings
 def _get_fernet() -> Fernet:
     settings = get_settings()
     # Derive a 32-byte key from SECRET_KEY using PBKDF2
+    # Salt is configurable via ENCRYPTION_SALT environment variable
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=b"ai_scheduling_salt_v1",
+        salt=settings.encryption_salt.encode(),
         iterations=100000,
     )
     key = base64.urlsafe_b64encode(kdf.derive(settings.secret_key.encode()))

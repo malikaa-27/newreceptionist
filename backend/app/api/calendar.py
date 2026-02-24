@@ -60,10 +60,15 @@ async def create_event(
             description=request.description,
         )
         
-        # Save to database
+        # Save to database - pick first attendee that isn't the organizer
+        organizer_email = current_user["email"]
+        participant_email = next(
+            (e for e in request.attendees if e != organizer_email),
+            request.attendees[0],
+        )
         meeting = Meeting(
             organizer_id=current_user["user_id"],
-            participant_email=request.attendees[1] if len(request.attendees) > 1 else request.attendees[0],
+            participant_email=participant_email,
             start_time=request.start,
             end_time=request.end,
             google_event_id=result["event_id"],

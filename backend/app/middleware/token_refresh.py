@@ -28,7 +28,10 @@ class TokenRefreshMiddleware(BaseHTTPMiddleware):
                     get_credentials_for_user(db, user_id)
                 finally:
                     db.close()
-            except (JWTError, Exception):
-                pass  # Continue even if refresh fails
+            except (JWTError, Exception) as e:
+                import logging
+                logging.getLogger(__name__).debug(
+                    "Token refresh skipped: %s", e, exc_info=False
+                )
         
         return await call_next(request)

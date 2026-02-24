@@ -6,7 +6,6 @@ import { format, parseISO } from 'date-fns';
 interface TimeSlotButtonsProps {
   slots: TimeSlot[];
   onSelect: (slot: TimeSlot) => void;
-  userTimezone?: string;
 }
 
 function formatSlotTime(isoString: string): string {
@@ -18,7 +17,7 @@ function formatSlotTime(isoString: string): string {
   }
 }
 
-export default function TimeSlotButtons({ slots, onSelect, userTimezone }: TimeSlotButtonsProps) {
+export default function TimeSlotButtons({ slots, onSelect }: TimeSlotButtonsProps) {
   if (!slots || slots.length === 0) return null;
 
   return (
